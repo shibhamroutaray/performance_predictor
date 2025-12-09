@@ -1,5 +1,4 @@
-# quick student grade prediction thing (streamlit)
-# not cleaned up properly but works fine
+# quick student grade predictor (streamlit)
 
 import streamlit as st
 import pandas as pd
@@ -8,7 +7,7 @@ import matplotlib.pyplot as plt
 import pickle
 import shap
 
-# Load model (hope file exists lol)
+# Load model 
 try:
     with open("rf_model.pkl", "rb") as f:
         model = pickle.load(f)
@@ -36,7 +35,6 @@ def make_feats(studytime, absences, g1, g2, medu, fedu,
         "free_time_score": [free_time],
     })
 
-    # some quick engineered stuff
     # (can tune later, don't overthink)
     if studytime == 0:
         eff = (g1 + g2)
@@ -44,10 +42,10 @@ def make_feats(studytime, absences, g1, g2, medu, fedu,
         eff = (g1 + g2) / studytime
 
     d["study_efficiency"] = eff
-    d["attendance_ratio"] = 1/(1+absences)   # meh formula but ok
+    d["attendance_ratio"] = 1/(1+absences)   # formula 
     d["parent_edu_index"] = (medu + fedu) / 2
 
-    # column order matters (annoying)
+    # column order matters 
     ordered = [
         "studytime", "absences", "Medu", "Fedu", "G1", "G2",
         "study_efficiency", "attendance_ratio", "parent_edu_index",
@@ -60,8 +58,8 @@ def make_feats(studytime, absences, g1, g2, medu, fedu,
 
 # ---------------------------- UI part -----------------------------
 
-st.title("Student Grade Predictor (rough version)")
-st.write("Put values below & it’ll estimate final G3. Nothing fancy.")
+st.title("Student Grade Predictor ")
+st.write("Put values below & it’ll estimate final G3.")
 
 st.subheader("Student Inputs")
 
